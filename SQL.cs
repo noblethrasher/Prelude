@@ -310,12 +310,8 @@ namespace Prelude
             public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
             {
                 return new DynamicMetaObject(Expression.Invoke(reader.f, Expression.Constant(binder.Name)) , BindingRestrictions.GetInstanceRestriction(Expression.Constant(reader), reader));
-            }
-
-            
-        }
-
-        
+            }            
+        }        
     }
 
     public class SQL : IEnumerable<DynamicDataReader>, IDisposable, IEnumerable<SqlParameter>

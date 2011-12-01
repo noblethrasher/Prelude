@@ -101,8 +101,7 @@ namespace Prelude
                 return command.ExecuteReader();
                     
             }
-        }
-        
+        }        
         
         protected static string GetConnectionString()
         {
@@ -115,8 +114,7 @@ namespace Prelude
         }
 
         public abstract XContainer ToXML(XDocument xml = null);
-    }
-    
+    }    
     
     public sealed class DynamicDataReader : IDataReader, IDynamicMetaObjectProvider
     {

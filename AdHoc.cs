@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Prelude
 {
-    public static class AdHocUtils
+    public static class _Utils
     {
         public static ISet<T> CreateSet<T>(this IEqualityComparer<T> eq)
         {
@@ -19,7 +19,7 @@ namespace Prelude
 
         public static ISet<T> CreateSet<T>(this Func<T, T, bool> eq)
         {
-            return new HashSet<T>(new AdhocEqualityComparer<T>(eq, x => x.GetHashCode()));
+            return new HashSet<T>(new _EqualityComparer<T>(eq, x => x.GetHashCode()));
         }
 
         public static ISet<T> AddRange<T>(this ISet<T> s, IEnumerable<T> xs)
@@ -32,11 +32,11 @@ namespace Prelude
         }
     }
 
-    public class AdhocDisposable : IDisposable
+    public class _Disposable : IDisposable
     {
         Action dispose;
 
-        public AdhocDisposable(Action dispose)
+        public _Disposable(Action dispose)
         {
             this.dispose = dispose;
         }
@@ -47,12 +47,12 @@ namespace Prelude
         }
     }
 
-    public class AdhocEqualityComparer<T> : IEqualityComparer<T>
+    public class _EqualityComparer<T> : IEqualityComparer<T>
     {
         Func<T, T, bool> equals;
         Func<T, int> _getHashCode;
 
-        public AdhocEqualityComparer(Func<T, T, bool> eq, Func<T, int> hashCode)
+        public _EqualityComparer(Func<T, T, bool> eq, Func<T, int> hashCode)
         {
             equals = eq;
             _getHashCode = hashCode;
@@ -69,11 +69,11 @@ namespace Prelude
         }
     }
     
-    public class AdHocEquatable<T> : IEquatable<T>
+    public class _Equatable<T> : IEquatable<T>
     {
         readonly Func<T, bool> equals;
 
-        public AdHocEquatable(Func<T, bool> eq)
+        public _Equatable(Func<T, bool> eq)
         {
             equals = eq;
         }
@@ -84,11 +84,11 @@ namespace Prelude
         }
     }
     
-    public class AdHocComparer<T> : IComparer<T>
+    public class _Comparer<T> : IComparer<T>
     {
         readonly Func<T, T, int> comparer;
 
-        public AdHocComparer(Func<T, T, int> comparer)
+        public _Comparer(Func<T, T, int> comparer)
         {
             this.comparer = comparer;
         }        
@@ -99,11 +99,11 @@ namespace Prelude
         }
     }
 
-    public class AdHocComparable<T> : IComparable<T>
+    public class _Comparable<T> : IComparable<T>
     {
         readonly Func<T, int> compare;
 
-        public AdHocComparable(Func<T, int> compare)
+        public _Comparable(Func<T, int> compare)
         {
             this.compare = compare;
         }
@@ -114,13 +114,13 @@ namespace Prelude
         }
     }
 
-    public class AdHocEnumerator<T> : IEnumerator<T>
+    public class _Enumerator<T> : IEnumerator<T>
     {
         readonly Func<T> current;
         readonly Action dispose, reset;
         readonly Func<bool> moveNext;
 
-        public AdHocEnumerator(Func<T> current, Func<bool> moveNext, Action dispose, Action reset)
+        public _Enumerator(Func<T> current, Func<bool> moveNext, Action dispose, Action reset)
         {
             this.current = current;
             this.moveNext = moveNext;
@@ -128,7 +128,7 @@ namespace Prelude
             this.reset = reset;
         }
 
-        public AdHocEnumerator(Func<T> current, Func<bool> moveNext) : this(current, moveNext, null, null) { }        
+        public _Enumerator(Func<T> current, Func<bool> moveNext) : this(current, moveNext, null, null) { }        
         
         public T Current
         {
@@ -159,15 +159,15 @@ namespace Prelude
 
         public IEnumerable<T> ToEnumerable()
         {
-            return new AdHocEnumerable<T>(() => this);
+            return new _Enumerable<T>(() => this);
         }
-    }
+    }    
 
-    public class AdHocEnumerable<T> : IEnumerable<T>
+    public class _Enumerable<T> : IEnumerable<T>
     {
         Func<IEnumerator<T>> _getEnumerator;
 
-        public AdHocEnumerable(Func<IEnumerator<T>> getEnumerator)
+        public _Enumerable(Func<IEnumerator<T>> getEnumerator)
         {
             _getEnumerator = getEnumerator;
         }
@@ -183,13 +183,13 @@ namespace Prelude
         }
     }
 
-    public class AdHocObserver<T> : IObserver<T>
+    public class _Observer<T> : IObserver<T>
     {
         Action onCompleted;
         Action<Exception> error;
         Action<T> onNext;
 
-        public AdHocObserver(Action completed, Action<Exception> error, Action<T> next)
+        public _Observer(Action completed, Action<Exception> error, Action<T> next)
         {
             this.onCompleted = completed;
             this.error = error;
@@ -212,11 +212,11 @@ namespace Prelude
         }
     }
 
-    public class AdHocObservable<T> : IObservable<T>
+    public class _Observable<T> : IObservable<T>
     {
         Func<IObserver<T>, IDisposable> subscribe;
 
-        public AdHocObservable(Func<IObserver<T>, IDisposable> subscribe)
+        public _Observable(Func<IObserver<T>, IDisposable> subscribe)
         {
             this.subscribe = subscribe;
         }

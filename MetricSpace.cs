@@ -42,14 +42,14 @@ namespace Prelude
         double Delta { get; }
     }
 
-    class AdHocMetric<T> : Metric<T>
+    class _Metric<T> : Metric<T>
     {
         private IEnumerable<T> xs;
         private Func<T, T, double> distance;
         private Func<T> origin;
         private Func<double> delta;
 
-        public AdHocMetric(IEnumerable<T> xs, Func<T, T, double> distance, Func<T> origin, Func<double> delta)
+        public _Metric(IEnumerable<T> xs, Func<T, T, double> distance, Func<T> origin, Func<double> delta)
         {
             this.xs = xs;
             this.distance = distance;
@@ -57,7 +57,7 @@ namespace Prelude
             this.delta = delta;
         }
 
-        public AdHocMetric(IEnumerable<T> xs, Func<T, T, double> distance, Func<T> origin) : this(xs, distance, origin, () => 0)
+        public _Metric(IEnumerable<T> xs, Func<T, T, double> distance, Func<T> origin) : this(xs, distance, origin, () => 0)
         {
             
         }
@@ -92,7 +92,7 @@ namespace Prelude
     {
         public static Metric<T> ToMetric<T>(this IEnumerable<T> xs, Func<T, T, double> distance, Func<T> origin, Func<double> delta)
         {
-            return new AdHocMetric<T>(xs, distance, origin, delta);
+            return new _Metric<T>(xs, distance, origin, delta);
         }
 
         public static Metric<T> ToMetric<T>(this IEnumerable<T> xs, Func<T, T, double> distance, Func<T> origin)

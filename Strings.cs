@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Prelude
-{
-    
-    
+{   
     public class SuperString : IEnumerable<char>, IEquatable<SuperString>, IEquatable<string>
     {
         string s;
@@ -81,6 +80,27 @@ namespace Prelude
             return s.s;
         }
 
+        public SuperString Format(string format, object arg0)
+        {
+            return new SuperString (string.Format (s, arg0));
+        }
+
+        public SuperString Format(string format, params object[] args)
+        {
+            return new SuperString (string.Format (s, args));
+        }
+
+        public IEnumerable<SuperString> FindAll(string pattern)
+        {
+            foreach (Match match in Regex.Matches(this.s, pattern))
+                yield return new SuperString(match.Value);
+        }
+
+        public SuperString Find(string pattern)
+        {
+            return new SuperString (Regex.Match (this.s, pattern).Value);
+        }
+
         bool IEquatable<SuperString>.Equals(SuperString other)
         {
             return other.s.Equals(other.s);
@@ -90,6 +110,16 @@ namespace Prelude
         {
             return other.Equals(this.s);
         }
+
+        public bool ParseableAsInt()
+        {
+            return 0.Becomes (this.s).SuccessfulParse;
+        }
+
+        public bool ParseableAsDate()
+        {
+            return DateTime.MinValue.Becomes (this.s).SuccessfulParse;
+        }        
     }    
     
     public static class Strings
@@ -104,9 +134,7 @@ namespace Prelude
             }
 
             return s.ToString();
-
         }
-
 
         public static string Capitalize(this string s)
         {
@@ -127,6 +155,10 @@ namespace Prelude
             return new string(xs);
         }
 
+        public static string Substring(this string s, int n)
+        {
+            return new string (s.Skip (n).ToArray ());
+        }
 
         public static string CamelCase(this string s)
         {
@@ -145,8 +177,7 @@ namespace Prelude
 
         public static string Repeat(this string s, uint n)
         {
-            var sb = new StringBuilder((int)n);
-            
+            var sb = new StringBuilder((int)n);            
 
             for (var i = 0; i < n; i++)
                 sb.Append(s);
@@ -190,8 +221,7 @@ namespace Prelude
             {
                 @bool = false;
                 return false;
-            }
-            
+            }            
             
             s = s.ToUpper();
 
@@ -242,7 +272,6 @@ namespace Prelude
                 case "0":
                     @bool = false;
                     return true;
-
             }
 
             @bool = null;
@@ -251,6 +280,7 @@ namespace Prelude
 
         }
 
+       
         public static bool IsNullOrEmpty(this string s)
         {
             return s == null || s.Length == 0;

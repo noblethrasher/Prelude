@@ -45,12 +45,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdHoc.cs" />
+    <Compile Include="BasicMath.cs" />
     <Compile Include="Functional.cs" />
     <Compile Include="Linq.cs" />
     <Compile Include="MetricSpace.cs" />
     <Compile Include="ParseHelpers.cs" />
     <Compile Include="SQL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SqlServer.cs" />
     <Compile Include="Strings.cs" />
     <Compile Include="Toggle.cs" />
   </ItemGroup>

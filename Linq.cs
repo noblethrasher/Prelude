@@ -101,6 +101,11 @@ namespace Prelude
         //    return xs.SelectMany(f, g);
         //}
 
+        public static IEnumerable<T> Except<T>(this IEnumerable<T> xs, T x)
+        {
+            return xs.Except (new[] { x });
+        }
+
         public static IEnumerable<T> Reject<T>(this IEnumerable<T> xs, Func<T, bool> predicate)
         {
             return xs.Where(x => !predicate(x));

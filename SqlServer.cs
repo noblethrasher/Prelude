@@ -49,14 +49,7 @@ namespace Prelude
         {
             command.Parameters.AddWithValue (name, value);
         }
-
-        protected void AddWithValueConditionally<K>(string name, K value) where K : class
-        {
-            if (value != null)
-                command.Parameters.AddWithValue (name, value);
-        }
-
-
+       
         protected virtual string GetConnectionString()
         {
             return System.Configuration.ConfigurationManager.ConnectionStrings["default"].ConnectionString;

@@ -373,10 +373,23 @@ namespace Prelude
 
         public IEnumerator<DynamicDataReader> GetEnumerator()
         {
-            var reader = new DynamicDataReader(GetSqlCommand().ExecuteReader());
+            try
+            {
+                var command = GetSqlCommand();
+                
+                var reader = new DynamicDataReader(command.ExecuteReader());
 
-            while (reader.Read())
-                yield return reader;
+                while (reader.Read())
+                     yield return reader;
+                
+            }
+            finally
+            {
+                command.Connection.Dispose();
+            }
+            
+            
+           
         }
 
         System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
